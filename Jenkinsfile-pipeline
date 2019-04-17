@@ -6,7 +6,7 @@ def make(command) {
 
 def getBranchDetails() {
     def branchDetails = [:]
-    branchData = "feature/cicd2"
+    branchData = "feature/cicd2".split('/')
     println("-------branch details size---")
     println(branchData.size())
     if (branchData.size() == 2) {
