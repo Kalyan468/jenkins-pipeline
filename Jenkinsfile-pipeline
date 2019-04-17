@@ -6,7 +6,7 @@ def make(command) {
 
 def getBranchDetails() {
     def branchDetails = [:]
-    branchData = BRANCH_NAME.split('/')
+    branchData = env.BRANCH_NAME.split('/')
     if (branchData.size() == 2) {
         branchDetails['type'] = branchData[0]
         branchDetails['version'] = branchData[1]
