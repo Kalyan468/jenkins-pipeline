@@ -30,7 +30,7 @@ node {
             sh 'env'
             branchDetails = getBranchDetails()
             println("-------branch details---")
-            println(branchDetails)
+            println(branchDetails.type)
         }
         stage('Build') {
             withCredentials([file(credentialsId: 'packer-env-cor-sand', variable: 'PACKER_ENV_FILE_LOCATION')]) {
