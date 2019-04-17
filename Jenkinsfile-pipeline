@@ -7,6 +7,8 @@ def make(command) {
 def getBranchDetails() {
     def branchDetails = [:]
     branchData = "feature/cicd2"
+    println("-------branch details size---")
+    println(branchData.size())
     if (branchData.size() == 2) {
         branchDetails['type'] = branchData[0]
         branchDetails['version'] = branchData[1]
