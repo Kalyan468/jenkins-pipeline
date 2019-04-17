@@ -1,0 +1,52 @@
+#!/usr/bin/env groovy
+
+def make(command) {
+    sh "cd cicd/packer/\$IMAGE_NAME && docker run -v \$(pwd)/logs:/platform-packer/logs --rm --env-file \${PACKER_ENV_FILE_LOCATION} d-packer:latest ${command}"
+}
+
+def getBranchDetails() {
+    def branchDetails = [:]
+    branchData = env.BRANCH_NAME.split('/')
+    if (branchData.size() == 2) {
+        branchDetails['type'] = branchData[0]
+        branchDetails['version'] = branchData[1]
+        return branchDetails
+    }
+    return branchDetails
+}
+
+//docker_packer_tag = 'packer-t:latest'
+
+properties([parameters([string(defaultValue: 'cicd-image-stream', description: 'Enter the name of the image folder ?', name: 'IMAGE_NAME')])])
+
+node {
+    def PROJECT_NAME = "this is a test"
+    withEnv(['DOCKER_PACKER_TAG=packer-t:latest']) {
+
+        stage('checkout') {
+            sh "echo ${PROJECT_NAME}"
+            checkout([$class: 'GitSCM', branches: [[name: 'feature/cicd']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'su-cloudv2-token', url: 'git@github.com:DigitalInnovation/cloudv2platform.git']]])
+            sh 'env'
+            branchDetails = getBranchDetails()
+            println(branchDetails)
+        }
+        stage('Build') {
+            withCredentials([file(credentialsId: 'packer-env-cor-sand', variable: 'PACKER_ENV_FILE_LOCATION')]) {
+                echo "Building....${params.IMAGE_NAME}"
+                sh 'env'
+            }
+        }
+        stage('build docker tooling') {
+          ansiColor('xterm') {
+            sh 'cd cicd/packer/$IMAGE_NAME && docker build -t ${DOCKER_PACKER_TAG} -f ./Dockerfile-packer-alpine .'
+          }
+        }
+        stage('check packer file') {
+          ansiColor('xterm') {
+            withCredentials([file(credentialsId: 'packer-env-cor-sand', variable: 'PACKER_ENV_FILE_LOCATION')]) {
+              make("packer-inspect")
+            }
+          }
+        }
+    }
+}
