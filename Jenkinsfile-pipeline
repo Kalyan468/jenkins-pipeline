@@ -25,7 +25,8 @@ node {
 
         stage('checkout') {
             sh "echo ${PROJECT_NAME}"
-            checkout([$class: 'GitSCM', branches: [[name: 'feature/cicd']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'su-cloudv2-token', url: 'git@github.com:DigitalInnovation/cloudv2platform.git']]])
+            checkout scm
+            //checkout([$class: 'GitSCM', branches: [[name: 'feature/cicd']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'su-cloudv2-token', url: 'git@github.com:DigitalInnovation/cloudv2platform.git']]])
             sh 'env'
             branchDetails = getBranchDetails()
             println(branchDetails)
