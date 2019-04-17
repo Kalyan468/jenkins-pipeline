@@ -6,7 +6,7 @@ def make(command) {
 
 def getBranchDetails() {
     def branchDetails = [:]
-    branchData = ${env.BRANCH_NAME}.split('/')
+    branchData = env.BRANCH_NAME.split('/')
     println("-------branch details size---")
     println(branchData.size())
     if (branchData.size() == 2) {
@@ -29,7 +29,6 @@ node {
             sh "echo ${PROJECT_NAME}"
             checkout scm
             //checkout([$class: 'GitSCM', branches: [[name: 'feature/cicd']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'su-cloudv2-token', url: 'git@github.com:DigitalInnovation/cloudv2platform.git']]])
-            sh 'env'
             branchDetails = getBranchDetails()
             println("-------branch details---")
             println(branchDetails.type)
