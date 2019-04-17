@@ -31,7 +31,8 @@ node {
             //checkout([$class: 'GitSCM', branches: [[name: 'feature/cicd']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'su-cloudv2-token', url: 'git@github.com:DigitalInnovation/cloudv2platform.git']]])
             branchDetails = getBranchDetails()
             println("-------branch details---")
-            println(branchDetails.type)
+            println("Type: "+branchDetails.type)
+            println("Version: "+branchDetails.version)
         }
         stage('Build') {
             withCredentials([file(credentialsId: 'packer-env-cor-sand', variable: 'PACKER_ENV_FILE_LOCATION')]) {
