@@ -29,6 +29,7 @@ node {
             //checkout([$class: 'GitSCM', branches: [[name: 'feature/cicd']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'su-cloudv2-token', url: 'git@github.com:DigitalInnovation/cloudv2platform.git']]])
             sh 'env'
             branchDetails = getBranchDetails()
+            println("-------branch details---")
             println(branchDetails)
         }
         stage('Build') {
